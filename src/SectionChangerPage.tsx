@@ -26,7 +26,7 @@ export interface SectionChangerPageProps {
 }
 
 
-export class SectionPageChanger extends React.Component<SectionChangerPageProps> {
+export class SectionChangerPage extends React.Component<SectionChangerPageProps> {
   private pageIndicatorRef = React.createRef<HTMLDivElement>();
   private sectionChangerRef = React.createRef<HTMLDivElement>();
 
