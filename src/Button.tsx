@@ -5,7 +5,7 @@ export interface ButtonProps {
   onClick?: () => void;
 }
 
-export default class Button extends React.Component<ButtonProps> {
+export class Button extends React.Component<ButtonProps> {
   render() {
     return <button type="button" className="ui-btn" onClick={this.props.onClick} >
       {this.props.text}

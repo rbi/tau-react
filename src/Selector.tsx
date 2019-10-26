@@ -11,7 +11,7 @@ export interface SelectorProps {
   onSelected?: (item: SelectorItem) => void
 }
 
-export default class Selector extends React.Component<SelectorProps> {
+export class Selector extends React.Component<SelectorProps> {
 
   private selectorRef = React.createRef<HTMLDivElement>();
   private selectedItem: SelectorItem|null = null;

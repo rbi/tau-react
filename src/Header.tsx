@@ -6,7 +6,7 @@ export interface HeaderProps {
   onMoreButtonClicked?: () => void;
 }
 
-export default class Header extends React.Component<HeaderProps> {
+export class Header extends React.Component<HeaderProps> {
   render() {
     return <header className={"ui-header" + this.props.onMoreButtonClicked? " ui-has-more":""}>
       { this.props.title &&

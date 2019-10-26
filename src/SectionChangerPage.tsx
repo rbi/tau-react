@@ -1,7 +1,7 @@
 import * as React from 'react'
 
-import Page, { PageProps } from "./Page"
-import HardwareButton from "./HardwareButton"
+import {Page, PageProps } from "./Page"
+import {HardwareButton} from "./HardwareButton"
 
 declare let tau: any;
 
@@ -26,7 +26,7 @@ export interface SectionChangerPageProps {
 }
 
 
-export default class SectionPageChanger extends React.Component<SectionChangerPageProps> {
+export class SectionPageChanger extends React.Component<SectionChangerPageProps> {
   private pageIndicatorRef = React.createRef<HTMLDivElement>();
   private sectionChangerRef = React.createRef<HTMLDivElement>();
 

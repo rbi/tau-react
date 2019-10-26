@@ -13,7 +13,7 @@ export class ListElement extends React.Component<ListElementProps> {
   }
 }
 
-export default class ListView extends React.Component {
+export class ListView extends React.Component {
 
   private listRef = React.createRef<HTMLUListElement>()
 

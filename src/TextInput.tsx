@@ -10,7 +10,7 @@ export interface TextInputProps {
   handleChange?: (newVal:string) => void
 }
 
-export default class TextInput extends React.Component<TextInputProps> {
+export class TextInput extends React.Component<TextInputProps> {
 
   private inputRef = React.createRef<HTMLInputElement>();
   private handleChangeBound = this.handleChange.bind(this);

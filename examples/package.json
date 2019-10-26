@@ -1,0 +1,59 @@
+{
+  "name": "tau-react-examples",
+  "version": "0.1.0",
+  "description": "Demonstrates how to use tau-react.",
+  "scripts": {
+    "build:html": "webpack",
+    "build:tizen": "rm -f target/*.wgt && tizen package -s ENTER_KEY_HERE -o target -t wgt -- target/dist",
+    "build": "npm run build:html && npm run build:tizen",
+    "prestart": "sdb install target/tau-react-demo.wgt",
+    "start:watch": "sdb shell app_launcher -s abcdef.tau-react-demo",
+    "start:local": "webpack-dev-server",
+    "start": "npm run start:watch",
+    "clean": "rm -r target/",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:rbi/tau-react.git",
+    "directory" : "examples"
+  },
+  "author": "Raik Bieniek <dev@bieniek-it.de>",
+  "license": " Apache-2.0",
+  "devDependencies": {
+    "@types/jest": "^23.3.1",
+    "@types/react": "^16.9.5",
+    "@types/react-dom": "^16.9.1",
+    "copy-webpack-plugin": "^4.5.2",
+    "css-loader": "^1.0.0",
+    "file-loader": "^4.2.0",
+    "jest": "^23.5.0",
+    "style-loader": "^1.0.0",
+    "ts-jest": "^23.1.4",
+    "ts-loader": "^4.5.0",
+    "typescript": "^3.0.1",
+    "webpack": "^4.16.5",
+    "webpack-cli": "^3.1.0",
+    "webpack-dev-server": "^3.1.5"
+  },
+  "dependencies": {
+    "react": "^16.10.2",
+    "react-dom": "^16.10.2",
+    "tau": "https://github.com/Samsung/TAU/archive/v1.1.8.tar.gz"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "jsx",
+      "ts",
+      "tsx"
+    ],
+    "moduleNameMapper": {
+      "^@/(.*)$": "<rootDir>/src/$1"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(js?|ts?)$",
+    "transform": {
+      "^.+\\.ts$": "ts-jest"
+    }
+  }
+}

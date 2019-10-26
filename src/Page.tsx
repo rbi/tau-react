@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import HardwareButton from "./HardwareButton";
+import {HardwareButton} from "./HardwareButton";
 
 declare let tau: any;
 
@@ -11,7 +11,7 @@ export interface PageProps {
     onHardwareButton?: (button: HardwareButton) => void
 }
 
-export default class Page extends React.Component<PageProps> {
+export class Page extends React.Component<PageProps> {
 
   private pageRef = React.createRef<HTMLDivElement>();
   private handleTizenHwKeyBound: (e:any) => void;

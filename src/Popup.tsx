@@ -7,7 +7,7 @@ export interface PopupProps {
   onClose: () => void;
 }
 
-export default class Popup extends React.Component<PopupProps> {
+export class Popup extends React.Component<PopupProps> {
 
   private popupRef = React.createRef<HTMLDivElement>();
 

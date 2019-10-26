@@ -2,3 +2,4 @@ node_modules/
 *.wgt
 *.swp
 target/
+package-lock.json
