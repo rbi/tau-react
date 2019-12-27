@@ -8,25 +8,20 @@ export interface TextInputProps {
   handleChange?: (newVal:string) => void
 }
 
+declare let tau: any;
+
 export class TextInput extends React.Component<TextInputProps> {
 
   private inputRef = React.createRef<HTMLInputElement>();
   private handleChangeBound = this.handleChange.bind(this);
   private visibilityObserver = new IntersectionObserver(this.handleChangeBound, {});
-  private registerChangeListenerBound = this.registerChangeListener.bind(this);
-
-  private selfVisibilityObserver = new IntersectionObserver(this.registerChangeListenerBound, {});
 
   render() {
     return <input name={this.props.name} type={this.props.type?this.props.type:"text"} value={this.props.value} placeholder={this.props.placeholder} onChange={()=>{}} ref={this.inputRef}/>
   }
 
   componentDidMount() {
-    if(!(this.props.handleChange && this.inputRef.current)) {
-      return;
-    }
-    // ui-textinput-pane element is createy by tau which hasn't done so yet when the component did mount.
-    this.selfVisibilityObserver.observe(this.inputRef.current);
+    this.registerChangeListener();
   }
 
   componentWillUnmount() {
@@ -34,19 +29,27 @@ export class TextInput extends React.Component<TextInputProps> {
   }
 
   private registerChangeListener() {
-    if(!this.inputRef.current) {
+    if(!(this.props.handleChange && this.inputRef.current)) {
       return;
     }
 
-    let inputPanes = document.getElementsByClassName("ui-textinput-pane");
-    for(var i = 0; i < inputPanes.length; i++) {
-      this.visibilityObserver.observe(inputPanes[i]);
+    let selectors =  tau.util.selectors;
+    let page = selectors.getClosestByClass(this.inputRef.current, "ui-page");
+    if (!page) {
+      return;
     }
+
+    var textInputPane = selectors.getChildrenByClass(page, "ui-textinput-pane")[0];
+    if (!textInputPane) {
+      textInputPane = document.createElement("div");
+      textInputPane.classList.add("ui-textinput-pane")
+      page.appendChild(textInputPane);
+    }
+    this.visibilityObserver.observe(textInputPane);
   }
 
   private unregisterChangeListener() {
     this.visibilityObserver.disconnect
-    this.selfVisibilityObserver.disconnect
   }
 
   private handleChange() {
@@ -54,7 +57,7 @@ export class TextInput extends React.Component<TextInputProps> {
       return;
     }
     if(this.inputRef.current.value !== this.props.value) {
-       this.props.handleChange(this.inputRef.current.value)
+      this.props.handleChange(this.inputRef.current.value)
     }
   }
 }
