@@ -1,7 +1,5 @@
 import * as React from "react";
 
-declare let tau: any;
-
 export interface TextInputProps {
   name?: string
   placeholder?: string
@@ -15,25 +13,28 @@ export class TextInput extends React.Component<TextInputProps> {
   private inputRef = React.createRef<HTMLInputElement>();
   private handleChangeBound = this.handleChange.bind(this);
   private visibilityObserver = new IntersectionObserver(this.handleChangeBound, {});
+  private registerChangeListenerBound = this.registerChangeListener.bind(this);
 
-  private widget: any = null;
+  private selfVisibilityObserver = new IntersectionObserver(this.registerChangeListenerBound, {});
 
   render() {
     return <input name={this.props.name} type={this.props.type?this.props.type:"text"} value={this.props.value} placeholder={this.props.placeholder} onChange={()=>{}} ref={this.inputRef}/>
   }
 
   componentDidMount() {
-    this.widget = tau.widget.TextInput(this.inputRef.current);
-    this.registerChangeListener();
+    if(!(this.props.handleChange && this.inputRef.current)) {
+      return;
+    }
+    // ui-textinput-pane element is createy by tau which hasn't done so yet when the component did mount.
+    this.selfVisibilityObserver.observe(this.inputRef.current);
   }
 
   componentWillUnmount() {
     this.unregisterChangeListener()
-    this.widget.destroy();
   }
 
   private registerChangeListener() {
-    if(!(this.props.handleChange && this.inputRef.current)) {
+    if(!this.inputRef.current) {
       return;
     }
 
@@ -45,6 +46,7 @@ export class TextInput extends React.Component<TextInputProps> {
 
   private unregisterChangeListener() {
     this.visibilityObserver.disconnect
+    this.selfVisibilityObserver.disconnect
   }
 
   private handleChange() {
