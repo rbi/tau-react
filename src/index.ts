@@ -6,7 +6,7 @@ export {Header} from './Header'
 export {ListView, ListElement} from './ListView'
 export {Page} from './Page'
 export {Popup} from './Popup'
-export {SectionChangerPage, Section} from './SectionChangerPage'
+export {SectionChanger, Section} from './SectionChanger'
 export {Selector} from './Selector'
 export {TextInput} from './TextInput'
 

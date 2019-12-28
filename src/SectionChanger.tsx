@@ -17,33 +17,38 @@ export class Section extends React.Component<SectionProps> {
   }
 }
 
-export interface SectionChangerPageProps {
-  active?: boolean
-  onHardwareButton?: (button: HardwareButton) => void
-    changeSectionOnRotaryDent?: boolean
-  header?: JSX.Element;
+export interface SectionChangerProps {
+  changeSectionOnRotaryDent?: boolean
   children: JSX.Element[];
 }
 
+class Aux extends React.Component {
+  render() {
+    return this.props.children;
+  }
+}
 
-export class SectionChangerPage extends React.Component<SectionChangerPageProps> {
+
+export class SectionChanger extends React.Component<SectionChangerProps> {
   private pageIndicatorRef = React.createRef<HTMLDivElement>();
   private sectionChangerRef = React.createRef<HTMLDivElement>();
+
+  private setupPageIndicatorBound = this.setupPageIndicator.bind(this);
+  private tearDownPageIndicatorBound = this.tearDownPageIndicator.bind(this);
 
   private sectionChanger: any;
   private indicator: any;
 
   render() {
 
-    return <Page active={this.props.active} onHardwareButton={this.props.onHardwareButton} onPageBeforeShow={() => this.setupPageIndicator()} onPageHide={() => this.tearDownPageIndicator()}>
-      {this.props.header && this.props.header}
+    return <Aux>
       <div className="ui-page-indicator" ref={this.pageIndicatorRef} />
       <div className="ui-content" ref={this.sectionChangerRef} style={{height: "100vh"}/* tau.circle.css messes up the height*/}>
         <div>
           {this.props.children}
         </div>
       </div>
-    </Page>
+    </Aux>
   }
 
   componentDidMount() {
@@ -51,6 +56,25 @@ export class SectionChangerPage extends React.Component<SectionChangerPageProps>
       throw "Expected HTML element for the section changer to be present but wasn't."
     }
     this.sectionChangerRef.current.addEventListener("sectionchange", (e: any) => this.indicator.setActive(e.detail.active) , false);
+
+    let page = this.getNearestPage();
+    if (page) {
+      page.addEventListener("pagebeforeshow", this.setupPageIndicatorBound);
+      page.addEventListener("pagehide", this.tearDownPageIndicatorBound);
+    }
+  }
+
+  componentWillUnmount() {
+    let page = this.getNearestPage();
+    if (page) {
+      page.removeEventListener("pagebeforeshow", this.setupPageIndicatorBound);
+      page.removeEventListener("pagehide", this.tearDownPageIndicatorBound);
+    }
+  }
+
+  private getNearestPage() {
+    let selectors =  tau.util.selectors;
+    return selectors.getClosestByClass(this.sectionChangerRef.current, "ui-page");
   }
 
 
